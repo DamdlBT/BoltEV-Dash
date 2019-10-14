@@ -26,6 +26,14 @@ layout = html.Div(
             ],
             placeholder="choisir la variable",
         ),
+        html.Label('Variable couleur'),
+        dcc.Dropdown(
+            id="couleur",
+            options=[
+                {"label": c, "value": c} for c in sorted(days.columns)
+            ],
+            placeholder="choisir la variable",
+        ),
         dcc.Graph(id="graph")
     ]
 )
@@ -36,9 +44,10 @@ app.layout = layout
 
 @app.callback(Output("graph", "figure"),
               [Input('x', 'value'),
-               Input("y", "value")])
-def update_graph(x, y):
-    fig = px.scatter(days, x=x, y=y)
+               Input("y", "value"),
+               Input("couleur", "value")])
+def update_graph(x, y, couleur):
+    fig = px.scatter(days, x=x, y=y, color=couleur)
     return fig               
 
 if __name__ == '__main__':

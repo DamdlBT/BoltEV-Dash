@@ -20,6 +20,7 @@ layout = html.Div(
                         {"label": c, "value": c} for c in sorted(days.columns)
                     ],
                     placeholder="choisir la variable",
+                    value="date",
                 ),
                 html.Label('Variable y'),
                 dcc.Dropdown(
@@ -28,6 +29,7 @@ layout = html.Div(
                         {"label": c, "value": c} for c in sorted(days.columns)
                     ],
                     placeholder="choisir la variable",
+                    value="consommation (kWh/100km)",
                 ),
                 html.Label('Variable couleur'),
                 dcc.Dropdown(
@@ -36,6 +38,7 @@ layout = html.Div(
                         {"label": c, "value": c} for c in sorted(days.columns)
                     ],
                     placeholder="choisir la variable",
+                    value="temp. ext. moyenne (deg.C)",
                 ),
             ],
             style={"width": "25%", "display": "inline-block", "float": "left" }
@@ -59,6 +62,7 @@ layout = html.Div(
 )
 
 app = dash.Dash(__name__)
+app.title = "Bolt EV"
 
 app.layout = layout
 
@@ -67,7 +71,7 @@ app.layout = layout
                Input("y", "value"),
                Input("couleur", "value")])
 def update_graph(x, y, couleur):
-    fig = px.scatter(days, x=x, y=y, color=couleur)
+    fig = px.scatter(days, x=x, y=y, color=couleur, hover_data=days.columns)
     return fig               
 
 if __name__ == '__main__':
